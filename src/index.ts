@@ -431,6 +431,14 @@ class IB extends EventEmitter {
     this._send('reqPnl', reqId, account, modelCode);
   };
 
+  cancelPnl = function (reqId) {
+    assert(_.isNumber(reqId), '"reqId" must be an integer - ' + reqId);
+
+    this._send('cancelPnl', reqId);
+
+    return this;
+  };
+
   // input params account here is acctCode, we name it account to be consistent with IB document
   reqPositionsMulti = function (reqId, account, modelCode) {
     assert(_.isNumber(reqId), '"reqId" must be an integer - ' + reqId);

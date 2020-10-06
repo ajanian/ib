@@ -779,6 +779,10 @@ Outgoing.prototype.reqPnl = function (reqId, account, modelCode) {
   this._send(C.OUTGOING.REQ_PNL, reqId, account, modelCode);
 };
 
+Outgoing.prototype.cancelPnl = function (reqId) {
+  this._send(C.OUTGOING.CANCEL_PNL, reqId);
+};
+
 Outgoing.prototype.reqAccountUpdates = function (subscribe, acctCode) {
   var version = 2;
 
