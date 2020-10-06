@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "lint": "tslint \"src/**/*.ts\" --project tsconfig.json",
-    "build": "rimraf dist && tsc",
+    "build": "rm -rf dist && tsc -p .",
     "prepare": "npm run build"
   },
   "engines": {
