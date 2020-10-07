@@ -771,7 +771,7 @@ Outgoing.prototype.reqAccountSummary = function (reqId, group, tags) {
 };
 
 Outgoing.prototype.reqPnl = function (reqId, account, modelCode) {
-  //FIXME need to figure out why this check fails
+  //FIXME when #3 is done we should reinstate this check
   /* if (this._controller._serverVersion < C.MIN_SERVER_VER.PNL) {
     return this._controller.emitError('It does not support pnl requests.');
   } */
@@ -780,6 +780,7 @@ Outgoing.prototype.reqPnl = function (reqId, account, modelCode) {
 };
 
 Outgoing.prototype.cancelPnl = function (reqId) {
+  //FIXME when #3 is done we should check server version
   this._send(C.OUTGOING.CANCEL_PNL, reqId);
 };
 
