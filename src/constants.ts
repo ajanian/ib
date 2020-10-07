@@ -1,4 +1,4 @@
-export const VERSION = 'twsapi_macunix.970.01';
+export const VERSION = 'twsapi_macunix.980.01';
 
 export const DEFAULT_HOST = '127.0.0.1';
 export const DEFAULT_PORT = 7496;
@@ -8,6 +8,7 @@ export const MAX_REQ_PER_SECOND = 40;
 export const CLIENT_VERSION = 62;
 export const SERVER_VERSION = 38;
 
+// incoming msg id's
 // incoming msg id's
 export const INCOMING = {
   TICK_PRICE: 1,
@@ -75,7 +76,7 @@ export const INCOMING = {
   HEAD_TIMESTAMP: 88,
   HISTOGRAM_DATA: 89,
   PNL: 94,
-  PNL_SINGLE: 95, //not implemented
+  PNL_SINGLE: 95,
   HISTORICAL_TICKS: 96,
   HISTORICAL_TICKS_BID_ASK: 97,
   HISTORICAL_TICKS_LAST: 98,
@@ -151,8 +152,8 @@ export const OUTGOING = {
   CANCEL_HISTOGRAM_DATA: 89,
   REQ_PNL: 92,
   CANCEL_PNL: 93,
-  REQ_PNL_SINGLE: 94, // not implemented
-  CANCEL_PNL_SINGLE: 95, // not implemented
+  REQ_PNL_SINGLE: 94,
+  CANCEL_PNL_SINGLE: 95,
   REQ_HISTORICAL_TICKS: 96,
   REQ_TICK_BY_TICK_DATA: 97,
   CANCEL_TICK_BY_TICK_DATA: 98

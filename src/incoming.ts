@@ -64,7 +64,7 @@ Incoming.prototype._PNL = function () {
   const reqId = this.dequeueInt();
   const dailyPnL = this.dequeueFloat();
 
-  //FIXME need to fix the version check once v100 is implemented in issue #3
+  //FIXME need to fix the version check 
   //const unrealizedPnL = this.dequeueFloat();
 
   /*   if (m_serverVersion >= EClient.MIN_SERVER_VER_UNREALIZED_PNL) {
