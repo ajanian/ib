@@ -19,15 +19,4 @@ var ib = new (require('.'))({
 
 ib.connect();
 
-const reqId = 123456;
-ib.reqPnl(reqId, 'U1234567', null);
-
-setTimeout(() => {
-    console.log("canceling pnl");
-    ib.cancelPnl(reqId);
-    console.log("sent cancel for pnl");
-
-    console.log("about to disconnect");
-    ib.disconnect();
-    console.log("disconnceted");
-}, 30 * 1000);
+ib.reqPnl(123456, 'U1234567', null);
