@@ -770,11 +770,27 @@ Outgoing.prototype.reqAccountSummary = function (reqId, group, tags) {
   this._send(C.OUTGOING.REQ_ACCOUNT_SUMMARY, version, reqId, group, tags);
 };
 
+Outgoing.prototype.startApi = function (clientVersion, clientId, optionalCapabilities) {
+  //FIXME need to figure out why this check fails
+  /* 
+   b.send(START_API);
+            b.send(VERSION);
+            b.send(m_clientId);
+            
+            if (m_serverVersion >= MIN_SERVER_VER_OPTIONAL_CAPABILITIES) {
+                b.send(m_optionalCapabilities);
+            }
+  */
+
+  this._send(C.OUTGOING.START_API, clientVersion, clientId, optionalCapabilities);
+};
+
 Outgoing.prototype.reqPnl = function (reqId, account, modelCode) {
   //FIXME need to figure out why this check fails
   /* if (this._controller._serverVersion < C.MIN_SERVER_VER.PNL) {
     return this._controller.emitError('It does not support pnl requests.');
   } */
+
 
   this._send(C.OUTGOING.REQ_PNL, reqId, account, modelCode);
 };

@@ -1,8 +1,8 @@
-var _ = require('lodash');
-var chalk = require('chalk');
-var moment = require('moment');
+const _ = require('lodash');
+const chalk = require('chalk');
+const moment = require('moment');
 
-var ib = new (require('..'))({
+const ib = new (require('.'))({
   // clientId: 0,
   host: '127.0.0.1',
   port: 4001
@@ -22,13 +22,13 @@ var ib = new (require('..'))({
 
 ib.connect();
 
-var intervalId = setInterval(function () {
+const intervalId = setInterval(function () {
   ib.reqCurrentTime();
-}, 300);
+}, 2000);
 
 // Disconnect after 3 seconds.
 setTimeout(function () {
   console.log(chalk.yellow('Stopping requests...'));
   clearInterval(intervalId);
   ib.disconnect();
-}, 3000);
+}, 5000);

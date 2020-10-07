@@ -1,5 +1,6 @@
 import net from 'net'
 import _ from 'lodash'
+import util from 'util';
 
 import C from './constants';
 
@@ -18,6 +19,9 @@ function Socket(controller) {
 
 Socket.prototype._onConnect = function () {
   this._connected = true;
+
+  sendHandshake(this._client);
+
   this._controller.emit('connected');
 
   this._controller.run('sendAsync', [C.CLIENT_VERSION]);
@@ -25,7 +29,9 @@ Socket.prototype._onConnect = function () {
 };
 
 Socket.prototype._onData = function (data) {
+  console.log(data);
   var dataWithFragment = this._dataFragment + data.toString();
+  console.log(dataWithFragment);
 
   var tokens = dataWithFragment.split(EOL);
   if (tokens[tokens.length - 1] !== '') {
@@ -34,15 +40,33 @@ Socket.prototype._onData = function (data) {
     this._dataFragment = '';
   }
   tokens = tokens.slice(0, -1);
+
+  console.log(tokens);
+
   this._controller.emit('received', tokens.slice(0), data);
 
   // Process data queue
   this._controller._incoming.enqueue(tokens);
 
   if (this._neverReceived) {
-    this._controller._serverVersion = parseInt(this._controller._incoming.dequeue(), 10);
+    console.log(this._controller._incoming.dequeue());
+    console.log(this._controller._incoming.dequeue());
+    console.log(this._controller._incoming.dequeue());
+    const serverVersionString = this._controller._incoming.dequeue().replace(EOL, '\x1A');
+    console.log("serverVersionString=" + serverVersionString);
+    this._controller._serverVersion = 151;//parseInt(serverVersionString);
     this._controller._serverConnectionTime = this._controller._incoming.dequeue();
+    console.log(this._controller._serverVersion);
+    console.log(this._controller._serverConnectionTime);
     this._controller.emit('server', this._controller._serverVersion, this._controller._serverConnectionTime);
+
+    this.send(['71', '2', '1', ''], false);
+    /* 
+        this._controller.schedule('startApi', {
+          func: 'startApi',
+          args: [2, 1, '']
+        }); */
+
   }
 
   this._controller._incoming.process();
@@ -70,6 +94,32 @@ Socket.prototype._onEnd = function () {
 Socket.prototype._onError = function (err) {
   this._controller.emit('error', err);
 };
+
+function serializeString(s) {
+  let content = Buffer.from(s);
+  let header = Buffer.alloc(4);
+  header.writeInt32BE(content.length, 0);
+
+  return Buffer.concat([header, content]);
+}
+
+function sendHandshake(client) {
+  const MIN_CLIENT_VERSION = 100;
+  const MAX_CLIENT_VERSION = 151;
+
+  let v100prefix = "API\0";
+  client.write(v100prefix);
+
+  let v100version = util.format('v%d..%d', MIN_CLIENT_VERSION, MAX_CLIENT_VERSION);
+  let msg = serializeString(v100version);
+  client.write(msg);
+  /* 
+    let serverVersion = await this._incomeHandler.awaitMessageType(
+      IncomeMessageType._SERVER_VERSION);
+    this._serverVersion = serverVersion;
+    this._incomeHandler.setServerVersion(serverVersion); */
+
+}
 
 Socket.prototype.connect = function () {
   var self = this;
@@ -125,6 +175,7 @@ Socket.prototype.send = function (tokens, async) {
 
   var data = tokens.join(EOL) + EOL;
   this._client.write(data);
+  console.log(data);
 
   this._controller.emit('sent', tokens, data);
 
